@@ -37,7 +37,7 @@ restful-booker-api-tests/
 ## Prerequisites
 
 - JDK 11+ (`java -version`)
-- Maven 3.8+ (`mvn -version`) — or just use VS Code's bundled Maven support
+- Maven 3.8+ (`mvn -version`) - or just use VS Code's bundled Maven support
 - VS Code with these extensions:
   - **Extension Pack for Java** (Microsoft) - gives you the JDK/debugger/project support
   - **Maven for Java** (Microsoft) - usually bundled in the pack above
@@ -74,6 +74,8 @@ mvn allure:serve    # builds the report and opens it in your browser immediately
 
 ## 📋 Test Coverage
 
+```
+
 API Tests
 ├── Authentication
 │   └── POST /auth                   # Generate authentication token
@@ -88,8 +90,7 @@ API Tests
 │
 └── Health Check
     └── GET /ping                    # API availability check
-
-    ---
+```
 
     
 Each test class creates its own booking(s) in `@BeforeClass`/`@BeforeMethod`, so classes are
