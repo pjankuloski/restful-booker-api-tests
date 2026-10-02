@@ -39,9 +39,9 @@ restful-booker-api-tests/
 - JDK 11+ (`java -version`)
 - Maven 3.8+ (`mvn -version`) — or just use VS Code's bundled Maven support
 - VS Code with these extensions:
-  - **Extension Pack for Java** (Microsoft) — gives you the JDK/debugger/project support
-  - **Maven for Java** (Microsoft) — usually bundled in the pack above
-  - **Test Runner for Java** (Microsoft, bundled in the pack) — lets you click ▶ next to any
+  - **Extension Pack for Java** (Microsoft) - gives you the JDK/debugger/project support
+  - **Maven for Java** (Microsoft) - usually bundled in the pack above
+  - **Test Runner for Java** (Microsoft, bundled in the pack) - lets you click ▶ next to any
     `@Test` method in the editor gutter
 
 ## 🧪 Running from the command line
@@ -63,15 +63,12 @@ own summary at the end. Surefire also writes `target/surefire-reports/` (plain-t
 ## Generating the Allure report
 
 Allure result data is written automatically to `target/allure-results` on every run
-(the `allure-testng` + `aspectjweaver` wiring in `pom.xml` handles this — no extra code needed).
+(the `allure-testng` + `aspectjweaver` wiring in `pom.xml` handles this, no extra code needed).
 
 ```bash
 mvn allure:report   # generates static HTML into target/site/allure-maven-plugin
 mvn allure:serve    # builds the report and opens it in your browser immediately
 ```
-
-(`allure:serve` requires the Allure commandline to be resolvable — the Maven plugin downloads
-it automatically the first time, so just make sure you have internet access when you run it.)
 
 ---
 
@@ -92,6 +89,8 @@ API Tests
 └── Health Check
     └── GET /ping                    # API availability check
 
+    ---
+
     
 Each test class creates its own booking(s) in `@BeforeClass`/`@BeforeMethod`, so classes are
 independent and safe to run individually, in any order, or in parallel later if you want.
@@ -99,10 +98,10 @@ independent and safe to run individually, in any order, or in parallel later if 
 
 ## A note on this being a public demo API
 
-`restful-booker.herokuapp.com` is a shared, free-tier public demo API (used for QA practice by
+`restful-booker.herokuapp.com` is a shared, free-tier public demo API (used for QA demo by
 people everywhere), so:
 
-- It can be slow to "wake up" on the first request after idling — if the very first test
+- It can be slow to "wake up" on the first request after idling, if the very first test
   in a run times out, just re-run.
 - Data isn't isolated per user, other people's bookings exist alongside yours. That's why
   `TestDataFactory` generates randomized names/dates instead of hardcoding fixed ones,
