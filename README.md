@@ -3,71 +3,36 @@
 A Java API test automation framework for [`restful-booker`](https://restful-booker.herokuapp.com/),
 built with **REST Assured** + **TestNG**, Maven, and a layered architecture (config → model → client → test).
 
-> Note on tech stack: Selenium WebDriver drives *browsers*, not REST APIs, so it isn't part of
-> this project. For pure API testing, REST Assured is the Java-world equivalent of Selenium —
-> a fluent DSL purpose-built for HTTP requests/assertions — paired with TestNG as the runner,
-> exactly like you'd pair Selenium + TestNG for UI tests.
-
-## Tech stack
-
-| Concern              | Tool                          |
-|-----------------------|-------------------------------|
-| HTTP / API assertions | REST Assured 5.4              |
-| Test runner           | TestNG 7.9                    |
-| JSON (de)serialization| Jackson Databind              |
-| Build tool            | Maven                         |
-| Reporting             | Allure (+ TestNG's own report)|
-| Logging               | SLF4J (simple binding)        |
-
-## Project structure
+## 📁 Structure
 
 ```
 restful-booker-api-tests/
-├── pom.xml
-├── testng.xml                                 # master suite, defines run order
-├── src/main/java/com/qa/restfulbooker/
-│   ├── config/ConfigManager.java              # loads config.properties
-│   ├── models/                                # request/response POJOs
-│   │   ├── Booking.java
-│   │   ├── BookingDates.java
-│   │   ├── BookingResponse.java
-│   │   ├── BookingId.java
-│   │   ├── AuthRequest.java
-│   │   └── AuthResponse.java
-│   ├── clients/                               # one client per API resource
-│   │   ├── AuthClient.java
-│   │   ├── BookingClient.java
-│   │   └── PingClient.java
-│   └── utils/TestDataFactory.java             # randomized valid test data
-├── src/test/java/com/qa/restfulbooker/
-│   ├── base/BaseTest.java                     # base URI + shared auth token, once per suite
-│   ├── listeners/TestListener.java            # console pass/fail logging
-│   └── tests/
-│       ├── PingTests.java
-│       ├── AuthTests.java
-│       ├── CreateBookingTests.java
-│       ├── GetBookingTests.java
-│       ├── UpdateBookingTests.java
-│       ├── PartialUpdateBookingTests.java
-│       └── DeleteBookingTests.java
-└── src/test/resources/config.properties       # base.url, auth.username, auth.password
+│
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/qa/restfulbooker/
+│   │           ├── clients/          # API clients and reusable request methods
+│   │           ├── models/           # Request/response data models
+│   │           ├── config/           # API configuration and environment setup
+│   │           └── utils/            # Shared utilities and test helpers
+│   │
+│   └── test/
+│       ├── java/
+│       │   └── com/qa/restfulbooker/
+│       │       ├── auth/             # Authentication API tests
+│       │       ├── booking/          # Booking CRUD API tests
+│       │       └── healthcheck/      # API health-check tests
+│       │
+│       └── resources/
+│           └── restful-booker.properties  # Test configuration / credentials
+│
+├── pom.xml                           # Maven dependencies and build configuration
+├── README.md                         # Project documentation and test instructions
+└── .gitignore                        # Git ignored files
 ```
 
-## Endpoint → test coverage
-
-| Endpoint                              | Test class                     | Scenarios covered |
-|----------------------------------------|---------------------------------|--------------------|
-| `GET /ping`                            | `PingTests`                     | 200/201 health check |
-| `POST /auth`                           | `AuthTests`                     | valid creds → token; invalid creds → `reason` |
-| `POST /booking`                        | `CreateBookingTests`            | full payload, 3 data-driven payloads, missing optional field |
-| `GET /booking`                         | `GetBookingTests`               | all ids, filter by firstname/lastname, filter by checkin/checkout |
-| `GET /booking/:id`                     | `GetBookingTests`                | valid id, non-existent id → 404 |
-| `PUT /booking/:id`                     | `UpdateBookingTests`            | valid token → full replace, invalid token → 403 |
-| `PATCH /booking/:id`                   | `PartialUpdateBookingTests`     | valid token → partial fields update, invalid token → 403 |
-| `DELETE /booking/:id`                  | `DeleteBookingTests`            | valid token → 201 + record gone, no token → 403 |
-
-Each test class creates its own booking(s) in `@BeforeClass`/`@BeforeMethod`, so classes are
-independent and safe to run individually, in any order, or in parallel later if you want.
+---
 
 ## Prerequisites
 
@@ -79,7 +44,7 @@ independent and safe to run individually, in any order, or in parallel later if 
   - **Test Runner for Java** (Microsoft, bundled in the pack) — lets you click ▶ next to any
     `@Test` method in the editor gutter
 
-## Running from the command line
+## 🧪 Running from the command line
 
 ```bash
 # run the whole suite (uses testng.xml)
@@ -108,6 +73,30 @@ mvn allure:serve    # builds the report and opens it in your browser immediately
 (`allure:serve` requires the Allure commandline to be resolvable — the Maven plugin downloads
 it automatically the first time, so just make sure you have internet access when you run it.)
 
+---
+
+## 📋 Test Coverage
+
+API Tests
+├── Authentication
+│   └── POST /auth                   # Generate authentication token
+│
+├── Booking
+│   ├── GET /booking                 # Retrieve booking IDs
+│   ├── GET /booking/{id}            # Retrieve booking details
+│   ├── POST /booking                # Create a booking
+│   ├── PUT /booking/{id}            # Update a booking
+│   ├── PATCH /booking/{id}          # Partially update a booking
+│   └── DELETE /booking/{id}         # Delete a booking
+│
+└── Health Check
+    └── GET /ping                    # API availability check
+
+    
+Each test class creates its own booking(s) in `@BeforeClass`/`@BeforeMethod`, so classes are
+independent and safe to run individually, in any order, or in parallel later if you want.
+
+
 ## A note on this being a public demo API
 
 `restful-booker.herokuapp.com` is a shared, free-tier public demo API (used for QA practice by
@@ -121,4 +110,3 @@ people everywhere), so:
 - Validation is intentionally loose (e.g. it accepts a `totalprice` of `0`), so a couple of
   assertions are written to reflect the API's actual documented behavior rather than an
   idealized one.
-
