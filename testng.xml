@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="RestfulBookerAPISuite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.qa.restfulbooker.listeners.TestListener"/>
+    </listeners>
+
+    <!-- preserve-order keeps classes running Ping -> Auth -> Create -> Get -> Update -> Patch -> Delete
+         so log output reads top-to-bottom the way the API is naturally exercised.
+         Every class is still independent: each creates/cleans up its own booking data. -->
+    <test name="RestfulBookerAPITests" preserve-order="true">
+        <classes>
+            <class name="com.qa.restfulbooker.tests.PingTests"/>
+            <class name="com.qa.restfulbooker.tests.AuthTests"/>
+            <class name="com.qa.restfulbooker.tests.CreateBookingTests"/>
+            <class name="com.qa.restfulbooker.tests.GetBookingTests"/>
+            <class name="com.qa.restfulbooker.tests.UpdateBookingTests"/>
+            <class name="com.qa.restfulbooker.tests.PartialUpdateBookingTests"/>
+            <class name="com.qa.restfulbooker.tests.DeleteBookingTests"/>
+        </classes>
+    </test>
+
+</suite>

@@ -1,0 +1,40 @@
+package com.qa.restfulbooker.models;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BookingDates {
+
+    private String checkin;
+    private String checkout;
+
+    public BookingDates() {
+        // required by Jackson for deserialization
+    }
+
+    public BookingDates(String checkin, String checkout) {
+        this.checkin = checkin;
+        this.checkout = checkout;
+    }
+
+    public String getCheckin() {
+        return checkin;
+    }
+
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
+    }
+
+    public String getCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingDates{checkin='" + checkin + "', checkout='" + checkout + "'}";
+    }
+}
